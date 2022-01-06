@@ -1,122 +1,115 @@
-import axios from 'axios'
-import {useState} from 'react'
+import { useState } from 'react'
+import { Form, Field, Formik, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
-
-    const navigate = useNavigate()
-    const [userName, setUserName] = useState()
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [address, setAddress] = useState()
-    const [isLoading, setIsLoading] = useState(false)
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsLoading(true)
-        const data =  { userName, email, password, address }
-        console.log('Data coming at register page:', data)
-
-        // axios.post('http://192.168.100.44:3000/user/register', data)
-        // .then((response) => {
-        //     alert('Data sent successfully.', response)
-        //     console.log('User registration successful')
-        //     setIsLoading(false)
-        //     history.push('/')
-        // })
-    }
-    return (
-        <>
-        <section class="why_section layout_padding">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 offset-lg-3">
-                            <div class="full">
-                                <form onSubmit={handleSubmit}>
-                                    <fieldset>
-                                    <input
-                                            type="text"
-                                            placeholder="Enter Name"
-                                            name="userName"
-                                            value={userName}
-                                            onChange={e => setUserName(e.target.value)}
-                                            required
-                                        />
-                                        <input
-                                            type="email"
-                                            placeholder="Enter your email address"
-                                            name="email"
-                                            value={email}
-                                            onChange={e => setEmail(e.target.value)}
-                                            required
-                                        />
-                                        <input
-                                            type="password"
-                                            placeholder="Enter your password"
-                                            name="password"
-                                            value={password}
-                                            onChange={e => setPassword(e.target.value)}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Enter your address"
-                                            name="address"
-                                            value={address}
-                                            onChange={e => setAddress(e.target.value)}
-                                            required
-                                        />
-                                        <button className="btn btn-primary">Sign Up</button>
-                                        {/* <input type="submit" value="Submit" /> */}
-                                    </fieldset>
-                                </form>
-                            </div>
-                            <div className="">
-                                Already have an account?
-                                <span onClick={() => navigate('/login')} style={{ cursor: 'pointer' }} className="" >
-                                    Login
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </>
-        // <div className="create">
-        //     <h2>User Register</h2>
-        // <form onSubmit={handleSubmit}>
-        //     <label>User Name:</label>
-        //     <input 
-        //     type="text"
-        //     required
-        //     value={userName}
-        //     onChange={e => setUserName(e.target.value)}
-            
-        //     />
-        //     <label>Email:</label>
-        //     <input 
-        //     type="email"
-        //     required
-        //     value={email}
-        //     onChange={e => setEmail(e.target.value)}
-        //     />
-        //     <label>Password:</label>
-        //     <input 
-        //     type="password"
-        //     required
-        //     value={password}
-        //     onChange={e => setPassword(e.target.value)}
-        //     />
-        //     <button>Register</button>
-        //     <div className=''>
-        //             Already have account?
-        //             <span onClick={() => navigate('/login')} style={{cursor: 'pointer'}}>
-        //                 Login
-        //             </span>
-        //         </div>
-        // </form>
-        // </div>
-     );
+const initialValues = {
+  userName: '',
+  email: '',
+  password: '',
+  address: ''
 }
- 
+
+const onSubmit = values => {
+  console.log('Fomik values:', values)
+}
+
+const validationSchema = Yup.object({
+  userName: Yup.string().required('Required!'),
+  email: Yup.string()
+    .email('Invalid email format')
+    .required('Required'),
+  password: Yup.string().required('No password provided.')
+    .min(8, 'Password is too short - should be 8 chars minimum.')
+    .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+  address: Yup.string().required('Required!'),
+
+})
+
+const Register = () => {
+  const navigate = useNavigate()
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const data =  { userName, email, password, address }
+    // console.log('Data coming at register page:', data)
+
+    // axios.post('http://192.168.100.44:3000/user/register', data)
+    // .then((response) => {
+    //     alert('Data sent successfully.', response)
+    //     console.log('User registration successful')
+    //     setIsLoading(false)
+    //     history.push('/')
+    // })
+  }
+  return (
+    <>
+      <section class="why_section layout_padding">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+              <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} class="full">
+                <Form>
+                  <fieldset>
+                    <div className="d-flex flex-column">
+                      <label style={{ textAlign: 'left' }}>Name</label>
+                      <Field
+                        type="text"
+                        placeholder="Enter Name"
+                        name="userName"
+                      />
+                      <div className="text-left text-danger" >
+                        <ErrorMessage name='userName' />
+                      </div>
+                    </div>
+                    <div className="d-flex flex-column">
+                      <label style={{ textAlign: 'left' }}>Email</label>
+                      <Field
+                        type="email"
+                        placeholder="Enter your email address"
+                        name="email"
+                      />
+                      <div className="text-left text-danger" >
+                        <ErrorMessage name='email' />
+                      </div>
+                    </div>
+                    <div className="d-flex flex-column">
+                      <label style={{ textAlign: 'left' }}>Password</label>
+                      <Field
+                        type="password"
+                        placeholder="Enter your password"
+                        name="password"
+                      />
+                      <div className="text-left text-danger" >
+                        <ErrorMessage name='password' />
+                      </div>
+                    </div>
+                    <div className="d-flex flex-column">
+                      <label style={{ textAlign: 'left' }}>Address</label>
+                      <Field
+                        type="text"
+                        placeholder="Enter your address"
+                        name="address"
+                      />
+                      <div className="text-left text-danger" >
+                        <ErrorMessage name='address' />
+                      </div>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Sign Up</button>
+                  </fieldset>
+                </Form>
+              </Formik>
+              <div className="">
+                Already have an account?
+                <span onClick={() => navigate('/login')} style={{ cursor: 'pointer' }} className="" >
+                  Login
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 export default Register;

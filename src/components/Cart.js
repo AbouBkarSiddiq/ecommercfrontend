@@ -14,7 +14,7 @@ const Cart = () => {
     localStorage.setItem('item',JSON.stringify(items));
     console.log("Items after delete:", item)
     setItems(items)
-
+    
     // localStorage.removeItem(id)
     // items.splice(id, 1)
     // localStorage.setItem('items', JSON.stringify(items));

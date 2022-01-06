@@ -1,15 +1,25 @@
-import React, {useEffect} from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react'
+import io from 'socket.io-client'
+import Messages from './Message';
+import MessageInput from './MessageInput';
 
 const ProductDetails = () => {
-    useEffect(() =>{
-        console.log("Rendered.")
-    })
+    const [socket, setSocket] = useState(null);
+    useEffect(() => {
+        const newSocket = io(`https://ecommerceburraq.herokuapp.com/`);
+        setSocket(newSocket);
+        // cleanup function
+        return () => newSocket.close();
+    }, [setSocket]);
+    console.log("New socket:", socket)
     
     return (
-        <div>
-            <h3>Product Details Page.</h3>
-        </div>
-    )
+        <>
+            <MessageInput socket={socket}/>
+            {/* <Messages socket={socket}/> */}
+        </>
+    );
 }
 
-export default ProductDetails
+export default ProductDetails;

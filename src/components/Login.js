@@ -1,18 +1,50 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Redirect } from 'react-router-dom';
+import { Form, Field, Formik, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
 // import { login } from '../../redux/actions/authActions'
+
+const initialValues = {
+    email: '',
+    password: ''
+}
+
+const onSubmit = values => {
+    console.log('Fomik values:', values)
+}
+
+const validationSchema = Yup.object({
+    email: Yup.string()
+        .email('Invalid email format')
+        .required('Required'),
+    password: Yup.string().required('No password provided.')
+        .min(8, 'Password is too short - should be 8 chars minimum.')
+        .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.')
+
+})
+
+const validate = values => {
+    let errors = {}
+    if (!values.email) {
+        errors.email = 'Required'
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i) {
+        errors.email = 'Invalid email address';
+    }
+
+    if (!values.password) {
+        errors.password = 'Required'
+    }
+
+    return errors
+}
 
 
 const Login = () => {
 
     const dispatch = useDispatch();
-
     const navigate = useNavigate()
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
-    const [isLoading, setIsLoading] = useState(false)
-
+    
     let userId = localStorage.getItem('userId')
     useEffect(() => {
         if (userId) {
@@ -20,56 +52,47 @@ const Login = () => {
         }
     })
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setIsLoading(true)
-        const data = { email, password }
-        console.log("Data of user:", data)
-        // dispatch(login(data))
-        // alert('User login successfully...')
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const data = { email, password }
+    //     console.log("Data of user:", data)
+    // }
 
     return (
         <>
-            {/* <section class="inner_page_head">
-                <div class="container_fuild">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="full">
-                                <h3>Contact us</h3>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section> */}
             <section class="why_section layout_padding">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 offset-lg-3">
-                            <div class="full">
-                                <form onSubmit={handleSubmit}>
+                            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} class="full">
+                                <Form>
                                     <fieldset>
-                                        <input
-                                            type="email"
-                                            placeholder="Enter your email address"
-                                            name="email"
-                                            value={email}
-                                            onChange={e => setEmail(e.target.value)}
-                                            required
-                                        />
-                                        <input
-                                            type="password"
-                                            placeholder="Enter your password"
-                                            name="password"
-                                            value={password}
-                                            onChange={e => setPassword(e.target.value)}
-                                            required
-                                        />
-                                        <button className="btn btn-primary">Login</button>
-                                        {/* <input type="submit" value="Submit" /> */}
+                                        <div className="d-flex flex-column">
+                                            <label style={{ textAlign: 'left' }}>Email</label>
+                                            <Field
+                                                type="email"
+                                                placeholder="Enter your email address"
+                                                name="email"
+                                            />
+                                            <div className="text-left text-danger" >
+                                                <ErrorMessage name='email' />
+                                            </div>
+                                        </div>
+                                        <div className="d-flex flex-column">
+                                            <label style={{ textAlign: 'left' }}>Password</label>
+                                            <Field
+                                                type="password"
+                                                placeholder="Enter your password"
+                                                name="password"
+                                            />
+                                            <div className="text-left text-danger" >
+                                                <ErrorMessage name='password' />
+                                            </div>
+                                        </div>
+                                        <button type="submit" className="btn btn-primary">Login</button>
                                     </fieldset>
-                                </form>
-                            </div>
+                                </Form>
+                            </Formik>
                             <div className="">
                                 Didn't have account?
                                 <span onClick={() => navigate('/register')} style={{ cursor: 'pointer' }} className="" >
@@ -81,32 +104,6 @@ const Login = () => {
                 </div>
             </section>
         </>
-        // <div className="create">
-        //     <h2>User Login</h2>
-        //     <form onSubmit={handleSubmit}>
-        //         <label className="label">Email:</label>
-        //         <input
-        //             type="email"
-        //             required
-        //             value={email}
-        //             onChange={e => setEmail(e.target.value)}
-        //         />
-        //         <label>Password:</label>
-        //         <input
-        //             type="password"
-        //             required
-        //             value={password}
-        //             onChange={e => setPassword(e.target.value)}
-        //         />
-        //         <button type="submit">Login</button>
-        //         <div className=''>
-        //             Didn't have account?
-        //             <span  style={{ cursor: 'pointer' }}>
-        //                 Sign up
-        //             </span>
-        //         </div>
-        //     </form>
-        // </div>
     );
 }
 

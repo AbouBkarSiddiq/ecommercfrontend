@@ -19,6 +19,9 @@ const Navbar = () => {
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/categories">Categories</Link>
                                 </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/product-details">Product Details</Link>
+                                </li>
                                 {/* <li className="nav-item dropdown">
                                     <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span className="nav-label">Pages <span className="caret" /></span></a>
                                     <ul className="dropdown-menu">
