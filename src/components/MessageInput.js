@@ -46,14 +46,14 @@ const MessageInput = ({ socket }) => {
       <section class="why_section layout_padding">
         <div class="container">
           <div class="row">
-            <div class="col-lg-6 offset-lg-3">
+            <div class="col-lg-6 offset-lg-3 border py-4 px-4">
               <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} class="full">
                 <Form>
                   <fieldset>
                     <div className="d-flex flex-column">
                       <label style={{ textAlign: 'left' }}>Message</label>
                       <Field
-                        style={{marginBottom: '8px !important', backgroundColor: 'red'}}
+                        style={{marginBottom: '8px !important', backgroundColor: ''}}
                         type="text"
                         placeholder="Comment"
                         name="text"
@@ -85,7 +85,7 @@ const MessageInput = ({ socket }) => {
                       </div>
                     </div>
                   </fieldset>
-                  <button type="submit" className="btn btn-primary my-4">Send Message</button>
+                  <button type="submit" className="btn btn-primary">Comment</button>
                 </Form>
               </Formik>
               <div className="">

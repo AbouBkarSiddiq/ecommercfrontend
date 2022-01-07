@@ -4083,6 +4083,60 @@ input[type="button"].btn-block {
   margin-bottom: -1px;
 }
 
+.cart-icon {
+  display: flex;
+  text-align: end;
+  margin-right: 2rem;
+  align-items: center;
+  position: relative;
+  justify-content: flex-end;
+}
+
+.cart-icon svg {
+  width: 5rem;
+  height: 5rem;
+  color: #2f80ed;
+}
+
+.cart-icon p {
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  right: -1.2rem;
+  top: 0.9rem;
+  border-radius: 50%;
+  background: #99cbf7;
+  color: #fff;
+  box-sizing: border-box;
+  font-size: 1.6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--main-color);
+}
+
+.badge {
+  padding-left: 9px;
+  padding-right: 9px;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+
+.label-warning[href],
+.badge-warning[href] {
+  background-color: #c67605;
+}
+#lblCartCount {
+    font-size: 12px;
+    background: #ff0000;
+    color: #fff;
+    padding: 0 5px;
+    vertical-align: top;
+    margin-left: -10px; 
+    border-radius: 5px;
+}
+
 .nav-tabs .nav-link {
   border: 1px solid transparent;
   border-top-left-radius: 0.25rem;

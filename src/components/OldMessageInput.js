@@ -30,7 +30,7 @@ const validate = values => {
   return errors
 }
 
-const schemaValidation = Yup.object({
+const validationSchema = Yup.object({
   userName: Yup.string().required('Required!'),
   text: Yup.string().required('Required!'),
   productId: Yup.string().required('Required!'),
@@ -40,7 +40,7 @@ const OldMessageInput = ({ socket }) => {
   const formik = useFormik({
     initialValues,
     onSubmit,
-    // schemaValidation,
+    // validationSchema,
     validate
   })
 

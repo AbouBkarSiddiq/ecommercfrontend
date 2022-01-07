@@ -60,10 +60,10 @@ const Login = () => {
 
     return (
         <>
-            <section class="why_section layout_padding">
+            <section class="py-4">
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-6 offset-lg-3">
+                        <div class="col-lg-6 offset-lg-3 border py-4 px-4">
                             <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit} class="full">
                                 <Form>
                                     <fieldset>
@@ -89,7 +89,7 @@ const Login = () => {
                                                 <ErrorMessage name='password' />
                                             </div>
                                         </div>
-                                        <button type="submit" className="btn btn-primary">Login</button>
+                                        <button type="submit" className="btn btn-primary my-3">Login</button>
                                     </fieldset>
                                 </Form>
                             </Formik>

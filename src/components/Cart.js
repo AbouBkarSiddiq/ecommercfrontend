@@ -1,25 +1,22 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+const cartFromLocalStorage = JSON.parse(localStorage.getItem("item") || '[]')
 
 const Cart = () => {
-  let item = JSON.parse(localStorage.getItem("item"))
-  const [items, setItems] = useState(item);
-  console.log("Item in localStorage:", items)
-  // const [products, setProducts] = useState(items)
-
+  const [items, setItems] = useState(cartFromLocalStorage);
+  
+  console.log("Items in localStorage:", items)
   const handleDelete = (key) => {
     console.log("Id of item", key)
-    // localStorage.removeItem("item")
-    console.log("Items array at handleDelete:", item)
+    console.log("Items array at handleDelete:", items)
     items.splice(key, 1);
     localStorage.setItem('item',JSON.stringify(items));
-    console.log("Items after delete:", item)
+    console.log("Items after delete:", items)
     setItems(items)
-    
-    // localStorage.removeItem(id)
-    // items.splice(id, 1)
-    // localStorage.setItem('items', JSON.stringify(items));
-
   }
+
+  useEffect(() => {
+   console.log("This hook works.")
+  }, [])
 
   return (
     <>
@@ -58,9 +55,8 @@ const Cart = () => {
               </h2>
             </div>
           </div>
-
         </div>
-        ): <h3>You have not selected yet any item.</h3>}
+        ): <h3>You have not selected any item.</h3>}
         
       </section>
     </>
