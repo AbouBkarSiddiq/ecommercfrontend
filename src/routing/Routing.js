@@ -18,7 +18,7 @@ export default function Routing() {
         <Route path={"/login"} exact element={<Login />} />
         <Route path={"/register"} exact element={<Register />} />
         <Route path={"/product"} element={<Product />}/>
-        <Route path={"/product-details"} element={<ProductDetails />}/>
+        <Route path={"/product-details/:id"} element={<ProductDetails />}/>
         <Route path={"/categories"} element={<Categories />}/>
         <Route path={"/cart"} element={<Cart />}/>
       </Routes>

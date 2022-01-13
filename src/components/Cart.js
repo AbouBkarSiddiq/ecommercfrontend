@@ -1,21 +1,25 @@
-import React, {useState, useEffect} from 'react'
-const cartFromLocalStorage = JSON.parse(localStorage.getItem("item") || '[]')
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { loadState, saveState } from '../redux/actions/storageActions';
+
 
 const Cart = () => {
-  const [items, setItems] = useState(cartFromLocalStorage);
-  
-  console.log("Items in localStorage:", items)
+  const [items, setItems] = useState([]);
+  let cartItems = useSelector((state) => state.storageReducer.cartItems);
+  const dispatch = useDispatch()
+
   const handleDelete = (key) => {
     console.log("Id of item", key)
     console.log("Items array at handleDelete:", items)
     items.splice(key, 1);
-    localStorage.setItem('item',JSON.stringify(items));
-    console.log("Items after delete:", items)
-    setItems(items)
+    dispatch(saveState([...items]))
+    setItems([...items])
   }
 
   useEffect(() => {
-   console.log("This hook works.")
+    dispatch(loadState())
+    setItems(cartItems)
+    console.log("This hook works.")
   }, [])
 
   return (
@@ -37,27 +41,26 @@ const Cart = () => {
                       {item.price}
                     </h6>
                   </div>
-                <button className="btn btn-danger" onClick={() => handleDelete(item._id)}>remove</button>
+                  <button className="btn btn-danger" onClick={() => handleDelete(key)}>remove</button>
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="d-flex my-2">
-            <h2>Total Amount:</h2>
-            <div>
-              <h2>
-              {
-                items.reduce(function(prev, current) {
-                  return prev + +current.price;
-                  }, 0)
-              }
-              </h2>
+            <div className="d-flex my-2">
+              <h2>Total Amount:</h2>
+              <div>
+                <h2>
+                  {
+                    items.reduce(function (prev, current) {
+                      return prev + +current.price;
+                    }, 0)
+                  }
+                </h2>
+              </div>
             </div>
           </div>
         </div>
-        ): <h3>You have not selected any item.</h3>}
-        
+        ) : <h3>You have not selected any item.</h3>}
+
       </section>
     </>
   )

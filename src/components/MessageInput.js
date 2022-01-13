@@ -43,7 +43,7 @@ const MessageInput = ({ socket }) => {
 
   return (
     <>
-      <section class="why_section layout_padding">
+      <section class="why_section">
         <div class="container">
           <div class="row">
             <div class="col-lg-6 offset-lg-3 border py-4 px-4">

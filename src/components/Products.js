@@ -1,37 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Redirect, Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
 import { getAllProducts } from '../redux/actions/adminActions'
+import { loadState, saveState } from '../redux/actions/storageActions';
+import ProductCard from './productCard';
+import Pagination from './Pagination'
+import HeaderGrid from './HeaderGrid';
+import ProductFooter from './ProductFooter';
 
-// const cartFromLocalStorage = JSON.parse(localStorage.getItem("item") || '[]')
 
 const Product = () => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const [productItems, setProductItems] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [productItemsPerPage] = useState(4)
+
+
   let products = useSelector((state) => state.adminReducer.products);
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
-  const [items, setItems] = useState([])
+  console.log('Data of fetched products:', products)
+  let cartItems = useSelector((state) => state.storageReducer.cartItems);
+  console.log("CartItems at product page:", cartItems)
+
+  const [users, setUsers] = useState([])
+  const [pageNumber, setPageNumber] = useState(0)
+  const usersPerPage = 4
+  const pagesVisited = pageNumber * usersPerPage
+  const displayUsers = users.slice(pagesVisited, pagesVisited + usersPerPage)
 
   useEffect(() => {
     dispatch(getAllProducts());
+    setProductItems(products)
+    setUsers(products)
+    dispatch(loadState())
     console.log('Rendering useEffect...')
   }, [])
-  console.log('Data of fetched products:', products)
 
-  const addToCart = (product) => {
-    console.log('Product', product._id)
-    // console.log('Product id', product_id)
-    // if(items.length > 0 && items !== []) {
-    // let product = {...items}
-    items.push(product);
-    localStorage.setItem("item", JSON.stringify(items));
-    console.log('Key of the product.', product)
-    console.log('Add to Cart function.')
-    // }
+  const indexOfLastPost = currentPage * productItemsPerPage
+  const indexOfFirstPost = indexOfLastPost - productItemsPerPage
+  const currentPosts = productItems.slice(indexOfFirstPost, indexOfLastPost)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+
+  const pageCount = Math.ceil(users.length / usersPerPage)
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected)
   }
 
   return (
     <>
+      <HeaderGrid name="Product Grid"/>
       <section className="product_section layout_padding">
         <div className="container">
           <div className="heading_container heading_center">
@@ -40,45 +59,31 @@ const Product = () => {
             </h2>
           </div>
           <div className="row">
-            {products?.map((product, key) => (
-              // localStorage.setItem(key 'item')
-              <div className="col-sm-6 col-md-4 col-lg-3" index={key}>
-                <div className="box">
-                  <div className="option_container">
-                    <div className="options">
-                      <Link to={`product-details/${product._id}`}>
-                        <h2 onClick={() => navigate('/product-details')} className="option1 rounded" style={{ cursor: "pointer" }} >
-                          Product Details
-                          {/* {product.title} */}
-                        </h2>
-                      </Link>
-                      <h2 onClick={() => addToCart(product)} className="option2 rounded" style={{ cursor: "pointer" }}>
-                        Buy Now
-                      </h2>
-                    </div>
-                  </div>
-                  <div className="img-box">
-                    <img src={product.image[0]} alt="" />
-                  </div>
-                  <div className="detail-box">
-                    <h5>
-                      {product.description}
-                    </h5>
-                    <h6>
-                      {product.price}
-                    </h6>
-                  </div>
+            {
+              <>
+                <ProductCard productItems={displayUsers} cartItems={cartItems} />
+                <div style={{ display: 'flex', flexDirection: '', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
+                  <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    pageCount={pageCount}
+                    onPageChange={changePage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"previousBttn"}
+                    nextLinkClassName={"nextBttn"}
+                    disabledClassName={"paginationDisabled"}
+                    activeClassName={"paginationActive"}
+                  />
                 </div>
-              </div>
-            ))}
-          </div>
-          <div className="btn-box">
-            <a>
-              View All products
-            </a>
+                {/* <ProductCard productItems={currentPosts} cartItems={cartItems} /> */}
+                {/* <Pagination productItemsPerPage={productItemsPerPage} totalProductItems={productItems.length} paginate={paginate}/> */}
+              </>
+            }
+
           </div>
         </div>
       </section>
+      <ProductFooter />
     </>
   )
 }

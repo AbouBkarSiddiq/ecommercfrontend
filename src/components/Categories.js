@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategories } from '../redux/actions/adminActions'
+import HeaderGrid from './HeaderGrid';
 
 const Categories = () => {
   const dispatch = useDispatch()
@@ -12,12 +13,12 @@ const Categories = () => {
     dispatch(getAllCategories());
     console.log('Rendering useEffect...')
   }, [])
-
+  
   console.log('Data of fetched categories:', categories)
-
   return (
     <div>
-      <section className="why_section layout_padding">
+      <HeaderGrid name="Category Grid" />
+      <section className="why_section p-4">
         <div className="container">
           <div className="heading_container heading_center">
             <h2>
@@ -40,17 +41,6 @@ const Categories = () => {
                     </p>
                   </div>
                 </div>
-                {/* <div className="d-flex my-2" style={{position: 'relative'}}>
-                                        <img src={category.image} alt=""  style={{width: '250px', height: '250px'}}/>
-                                    <div className="d-flex flex-column align-items-center justify-content-center" style={{position: 'absolute', top: '70%'}}>
-                                        <h5 className="">
-                                            {category.title}
-                                        </h5>
-                                        <h5 className="">
-                                            {category.description}
-                                        </h5>
-                                    </div>
-                                </div> */}
               </div>
             ))}
           </div>
@@ -59,5 +49,4 @@ const Categories = () => {
     </div>
   )
 }
-
 export default Categories

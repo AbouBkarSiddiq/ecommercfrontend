@@ -28,7 +28,6 @@ const validationSchema = Yup.object({
 
 const Register = () => {
   const navigate = useNavigate()
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // const data =  { userName, email, password, address }

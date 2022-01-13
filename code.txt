@@ -1,0 +1,12 @@
+cartItems.forEach((item) => {
+      if (item._id === product._id) {
+     
+        return alert("Item already exists.")
+        // console.log("Item already exists")
+      } else {
+        console.log("Item id and product id:", item._id , product._id)
+        cartItems.push(product);
+        localStorage.setItem("item", JSON.stringify(cartItems));
+        console.log("cart Items", cartItems)
+      }
+    })
