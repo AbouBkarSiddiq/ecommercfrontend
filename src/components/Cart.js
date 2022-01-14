@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, Link } from 'react-router-dom';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from './CheckoutForm';
 import { loadState, saveState } from '../redux/actions/storageActions';
+import PaymentForm from './PaymentForm';
 
+const stripePromise = loadStripe("pk_test_51KHkSsGpMGlAcNZe4RTGbHNAMaNFrGsQszQEUhRsobpuRLTZmW5v9RUC4mKifMvP06IOF8XDUJkDmfYQnFr0O0SI007LIYQlIJ");
 
 const Cart = () => {
+  const options = {
+    // passing the client secret obtained from the server
+    clientSecret: '{{CLIENT_SECRET}}',
+  };
+  console.log("Stripe Promise:", stripePromise);
   const [items, setItems] = useState([]);
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
   const dispatch = useDispatch()
@@ -38,29 +49,39 @@ const Cart = () => {
                       {item.description}
                     </h5>
                     <h6>
-                      {item.price}
+                      {'$' + item.price}
                     </h6>
                   </div>
                   <button className="btn btn-danger" onClick={() => handleDelete(key)}>remove</button>
                 </div>
               </div>
             ))}
-            <div className="d-flex my-2">
-              <h2>Total Amount:</h2>
-              <div>
-                <h2>
-                  {
-                    items.reduce(function (prev, current) {
-                      return prev + +current.price;
-                    }, 0)
-                  }
-                </h2>
-              </div>
-            </div>
           </div>
         </div>
         ) : <h3>You have not selected any item.</h3>}
-
+        <div className="d-flex flex-column">
+          <div className="d-flex my-2 justify-content-center align-items-center">
+            <h2>Total Amount:</h2>
+            <div>
+              <h2>
+                {
+                  items.reduce(function (prev, current) {
+                    return prev + +current.price;
+                  }, 0)
+                }
+              </h2>
+            </div>
+          </div>
+          <div>
+            <Link to={'/payment'}>
+              <button className="btn btn-danger">Check Out</button>
+            </Link>
+            {/* <PaymentForm /> */}
+            {/* <Elements stripe={stripePromise} options={options}>
+              <CheckoutForm />
+            </Elements> */}
+          </div>
+        </div>
       </section>
     </>
   )

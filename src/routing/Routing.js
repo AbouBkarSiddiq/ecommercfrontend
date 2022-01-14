@@ -8,6 +8,7 @@ import Cart from "../components/Cart";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import ProductDetails from "../components/ProductDetails";
+import PaymentForm from "../components/PaymentForm";
 
 export default function Routing() {
   return (
@@ -21,6 +22,7 @@ export default function Routing() {
         <Route path={"/product-details/:id"} element={<ProductDetails />}/>
         <Route path={"/categories"} element={<Categories />}/>
         <Route path={"/cart"} element={<Cart />}/>
+        <Route path={"/payment"} element={<PaymentForm />}/>
       </Routes>
     </Router>
   );

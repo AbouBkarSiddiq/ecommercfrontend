@@ -130,6 +130,40 @@ export const addCategory = (formData, history) => async (dispatch) => {
     }
 }
 
+export const createToken = (data, history) => async (dispatch) => {
+
+    // console.log('history object:', history);
+    try {
+        // dispatch(setIsFetching(true));
+        // for (var pair of formData.entries()) {
+        //     console.log('Log for form Data at actions:', pair[0] + ' - ' + pair[1]);
+        // }
+        // const headers = {
+        //     'Content-Type': 'multipart/form-data'
+        // }
+        const responseData = await axios.post('http://localhost:3002/stripe/create-token', data)
+        console.log("Response from what api:", responseData)
+
+        // const res = await axios.post(`http://192.168.100.44:3002/category`, formData, { headers });
+        // const res = await axios.post(`${process.env.REACT_APP_API_URL}category`, formData, { headers });
+        // console.log('Response from api for newly created categroy:', res)
+
+        // if (res.status === 200) {
+        //     dispatch({
+        //         type: ADD_CATEGORY,
+        //         isFetching: false,
+        //         payload: res.data.data,
+        //     });
+        //     history.push('/all-categories')
+        // } else {
+        //     dispatch(setIsFetching(false));
+        // }
+    } catch (error) {
+        console.log(":::::::::::::::;", error.message)
+        dispatch(setIsFetching(false));
+    }
+}
+
 export const getCategoryDataToUpdate = (id) => async (dispatch) => {
     try {
         dispatch(setIsFetching(true));
