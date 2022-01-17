@@ -71,7 +71,6 @@ const OldMessageInput = ({ socket }) => {
   //   });
   // })
   
-  
   console.log('Formik visited:', formik.touched)
   return (
     <>

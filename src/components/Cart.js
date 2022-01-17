@@ -14,7 +14,8 @@ const Cart = () => {
     // passing the client secret obtained from the server
     clientSecret: '{{CLIENT_SECRET}}',
   };
-  console.log("Stripe Promise:", stripePromise);
+  // console.log("Stripe Promise:", stripePromise);
+
   const [items, setItems] = useState([]);
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
   const dispatch = useDispatch()
@@ -30,7 +31,7 @@ const Cart = () => {
   useEffect(() => {
     dispatch(loadState())
     setItems(cartItems)
-    console.log("This hook works.")
+    // console.log("This hook works.")
   }, [])
 
   return (

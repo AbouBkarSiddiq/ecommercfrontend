@@ -27,5 +27,4 @@ const Pagination = ({ productItemsPerPage, totalProductItems, paginate }) => {
     </nav>
   )
 }
-
 export default Pagination

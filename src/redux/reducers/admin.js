@@ -1,4 +1,4 @@
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_CATEGORY, UPDATE_PRODUCT, SET_IS_FETCHING } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_CATEGORY, UPDATE_PRODUCT, SET_IS_FETCHING, CREATE_TOKEN } from "../constants/index";
 
 const initialState = {
   users: [],
@@ -7,6 +7,7 @@ const initialState = {
   category: {},
   products: [],
   product: {},
+  stripeToken: {},
   isFetching: false,
 };
 
@@ -88,6 +89,12 @@ const adminReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         category: action.payload,
+      };
+      case CREATE_TOKEN:
+        return {
+        ...state,
+        isFetching: false,
+        stripeToken: action.payload,
       };
     default:
       return state;
