@@ -15,7 +15,6 @@ const initialValues = {
 
 const onSubmit = values => {
   console.log('Fomik values:', values)
-  // (createToken(values))
 }
 
 const validationSchema = Yup.object({
@@ -23,7 +22,6 @@ const validationSchema = Yup.object({
     .min(13, 'Minimum card number length must be 13 digits.')
     .max(17, 'Maximum card number length must be 17')
     .matches(/^[0-9]+$/, "Must be only digits"),
-    // .matches(/^[3-7]+$/, "You must use 4 digits for cvc."),
 
   exp_month: string().required('Required')
     .matches(/^[0-9]+$/, "Must be only positive number.")
@@ -40,13 +38,14 @@ const validationSchema = Yup.object({
   //   .max(4, 'Maximum year number must be 4 digits'),
 
   cvc: string().required('No cvc provided.')
-    .matches(/^[0-9]+$/, "Must be only positive digits.")
-    .min(3, 'Cvc must be 3 digits minimum.')
-    .max(4, 'Cvc must be 4 digits maximum'),
+    .matches(/^[0-9]+$/, "Must be only positive digits."),
+  // .min(3, 'Cvc must be 3 digits minimum.')
+  // .max(4, 'Cvc must be 4 digits maximum'),
 })
 
 const PaymentForm = () => {
   const [value, setValue] = useState('')
+  const [lengthValue, setLengthValue] = useState('')
   const dispatch = useDispatch();
   const elements = useElements()
   const stripe = useStripe()
@@ -88,23 +87,14 @@ const PaymentForm = () => {
     // console.log(paymentIntent.id)
   }
 
-  if(number){
-    console.log('American express.')
-  }
-
-  // handleChangeInput = (e) => {
-  //   console.log(e.target.value)
-  //   console.log('changing');
-  // }
-  
-  const MyInput = ({ field, form, handleBlur, ...rest }) =>
+  const MyInput = ({ field, form, handleBlur, handleChange, ...rest }) =>
     <div>
-      <input {...field} onBlur={handleBlur} {...rest} />
-      {form.errors[field.name] &&
-        form.touched[field.name] &&
-        <div>
-          {form.errors[field.name]}
-        </div>}
+      <Field
+        {...field}
+        onBlur={handleBlur}
+        {...rest}
+
+      />
     </div>
 
   return (
@@ -116,29 +106,16 @@ const PaymentForm = () => {
             <div className="d-flex flex-column">
               <label className="d-flex">Card Number</label>
               <Field
-                component={MyInput}
                 type="number"
                 name="number"
                 placeholder="XXXXXXXXXXXXXX"
-                onBlur={e => {
+                onKeyUp={(e) => {
                   let someValue = e.target.value
-                  let result = someValue.match(/.{1,2}/g)
+                  var result = someValue.match(/.{1,2}/g)
                   setValue(result[0])
-                  // console.log("Some value:", typeof(someValue), someValue)
-                  console.log("Value::::::::::", result)
+                  console.log("Value::::::::::", result[0])
                 }}
-                //   onBlur={e => {
-                  //     // call the built-in handleBur
-                  //     handleBlur(e)
-                  //     // and do something about e
-                  //     let someValue = e.currentTarget.value
-                  //     console.log("Some value:", )
-                  // }}
-                  
-                  // onChange={e => handleChangeInput(e)}
-                  />
-              {value === '37'? <div>Use 4 digit cvc.</div> : null}
-
+              />
               <div className="text-left text-danger" >
                 <ErrorMessage name='number' />
               </div>
@@ -170,8 +147,20 @@ const PaymentForm = () => {
               <Field
                 type="number"
                 name="cvc"
-                placeholder="XXX"
+                placeholder="XXXX"
+                onKeyUp={(e) => {
+                  let someValue = e.target.value
+                  setLengthValue(someValue)
+                  console.log("Some value:", lengthValue.length)
+                }}
+                onClick={(e) => {
+                  let value = e.target.value
+                  setLengthValue(value.length)
+                  console.log('This function works:', lengthValue.length)
+                }}
               />
+              {(value !== '37' && lengthValue.length !== 4) ? <div className="text-left text-danger">Use 4 digit cvc.</div> : <div></div>}
+              {/* {(value !== '37' && value !== '') ? <div className="text-left text-danger">Use 3 digit cvc.</div> : null} */}
               <div className="text-left text-danger" >
                 <ErrorMessage name='cvc' />
               </div>
