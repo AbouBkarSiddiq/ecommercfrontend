@@ -13,42 +13,72 @@ const initialValues = {
   cvc: ''
 }
 
-const onSubmit = values => {
-  console.log('Fomik values:', values)
-}
-
-const validationSchema = Yup.object({
-  number: string().required('Required')
-    .min(13, 'Minimum card number length must be 13 digits.')
-    .max(17, 'Maximum card number length must be 17')
-    .matches(/^[0-9]+$/, "Must be only digits"),
-
-  exp_month: string().required('Required')
-    .matches(/^[0-9]+$/, "Must be only positive number.")
-    .min(1, 'Minimum month number start from 1.')
-    .max(2, 'Maximum month number must be 12'),
-
-  exp_year: number().required('Required')
-    .test('len', 'Must be exactly 4 characters',
-      val => val && val.toString().length === 4).min(new Date().getFullYear()),
-
-  // exp_year: string().required('Expire date of card is required.')
-  //   .matches(/^[0-9]+$/, "Must be only positive number.")
-  //   .min(4, 'Minimum year number must be 4 digits.')
-  //   .max(4, 'Maximum year number must be 4 digits'),
-
-  cvc: string().required('No cvc provided.')
-    .matches(/^[0-9]+$/, "Must be only positive digits."),
-  // .min(3, 'Cvc must be 3 digits minimum.')
-  // .max(4, 'Cvc must be 4 digits maximum'),
-})
-
 const PaymentForm = () => {
-  const [value, setValue] = useState('')
+  const [fourDigit, setFourDigit] = useState('')
   const [lengthValue, setLengthValue] = useState('')
+  const [touched, setTouched] = useState(false)
+  const [error, setError] = useState(false)
   const dispatch = useDispatch();
   const elements = useElements()
   const stripe = useStripe()
+
+  const onSubmit = values => {
+    console.log('Fomik values:', values)
+  }
+
+  const errorObj = {
+    error1: "Use 4 digit cvc.",
+    error2: "Use 3 digit cvc."
+  }
+
+  Yup.addMethod(Yup.string, "cvcLength", function (errorMessage) {
+    return this.test(`test-cvc-length`, errorMessage, function (value) {
+      const { path, createError } = this;
+      return (
+        (value && value.length === 3) ||
+        createError({ path, message: errorMessage })
+      );
+    });
+  });
+  
+  Yup.addMethod(Yup.string, "cvcLengthFour", function (errorMessage) {
+    return this.test(`test-cvc-length-four`, errorMessage, function (value) {
+      console.log("Fourvalue:", fourDigit)
+      const { path, createError } = this;
+      return (
+        ((fourDigit === '37') && (value && value.length === 4)) ||
+        createError({ path, message: errorMessage })
+        );
+      });
+    });
+    
+    console.log("Fourvalue:", typeof(fourDigit))
+  
+  const validationSchema = Yup.object({
+    number: string().required('Required')
+      .min(13, 'Minimum card number length must be 13 digits.')
+      .max(17, 'Maximum card number length must be 17')
+      .matches(/^[0-9]+$/, "Must be only digits"),
+  
+    exp_month: string().required('Required')
+      .matches(/^[0-9]+$/, "Must be only positive number.")
+      .min(1, 'Minimum month number start from 1.')
+      .max(2, 'Maximum month number must be 12'),
+  
+    exp_year: number().required('Required')
+      .test('len', 'Must be exactly 4 characters',
+      val => val && val.toString().length === 4).min(new Date().getFullYear()),
+      
+      cvc: string().required('No cvc provided.')
+      .matches(/^[0-9]+$/, "Must be only positive digits.")
+      // .test('length3', 'Must be exactly 3 characters',
+      // val  => val && val.length === 3)
+      // .test('length4', 'Must be exactly 4 characters',
+      // val  => val && val.length !== 4 && fourDigit === '37')
+      .cvcLength('Must be three digits')
+      .cvcLengthFour('Must be four digits'),
+
+  })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -93,7 +123,6 @@ const PaymentForm = () => {
         {...field}
         onBlur={handleBlur}
         {...rest}
-
       />
     </div>
 
@@ -112,7 +141,7 @@ const PaymentForm = () => {
                 onKeyUp={(e) => {
                   let someValue = e.target.value
                   var result = someValue.match(/.{1,2}/g)
-                  setValue(result[0])
+                  setFourDigit(result[0])
                   console.log("Value::::::::::", result[0])
                 }}
               />
@@ -151,21 +180,18 @@ const PaymentForm = () => {
                 onKeyUp={(e) => {
                   let someValue = e.target.value
                   setLengthValue(someValue)
+                  setTouched(true)
                   console.log("Some value:", lengthValue.length)
-                }}
-                onClick={(e) => {
-                  let value = e.target.value
-                  setLengthValue(value.length)
-                  console.log('This function works:', lengthValue.length)
+                  console.log("Value::::::::::", fourDigit)
                 }}
               />
-              {(value !== '37' && lengthValue.length !== 4) ? <div className="text-left text-danger">Use 4 digit cvc.</div> : <div></div>}
-              {/* {(value !== '37' && value !== '') ? <div className="text-left text-danger">Use 3 digit cvc.</div> : null} */}
+              {/* {(touched && lengthValue.length !== 4 && fourDigit === '37') ? <div className="text-left text-danger">{errorObj.error1}</div> : null} */}
+              {/* {(touched && lengthValue.length !== 3 && fourDigit !== '37') ? <div className="text-left text-danger">{errorObj.error2}</div> : null} */}
               <div className="text-left text-danger" >
                 <ErrorMessage name='cvc' />
               </div>
             </div>
-            <button type="submit" className="btn btn-danger">Pay Now</button>
+            <button type="submit" className="btn btn-danger" disabled={""}>Pay Now</button>
           </fieldset>
         </Form>
       </Formik>
