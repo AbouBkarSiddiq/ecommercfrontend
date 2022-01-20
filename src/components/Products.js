@@ -16,10 +16,11 @@ const Product = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [productItemsPerPage] = useState(4)
 
-
   let products = useSelector((state) => state.adminReducer.products);
-  const isFetching = useSelector((state) => state.adminReducer.isFetching)
   console.log('Data of fetched products:', products)
+  const isFetching = useSelector((state) => state.adminReducer.isFetching)
+  console.log('Products fetching true or false:::', isFetching)
+
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
   console.log("CartItems at product page:", cartItems)
 

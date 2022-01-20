@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, DELETE_USER, DELETE_CATEGORY, DELETE_PRODUCT, UPDATE_CATEGORY, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_PRODUCT, SET_IS_FETCHING, CREATE_TOKEN} from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, DELETE_USER, DELETE_CATEGORY, DELETE_PRODUCT, UPDATE_CATEGORY, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_PRODUCT, SET_IS_FETCHING, CREATE_TOKEN, GET_SINGLE_PRODUCT} from "../constants/index";
 // require('dotenv').config();
 
 const setIsFetching = (status) => {
@@ -130,21 +130,21 @@ export const addCategory = (formData, history) => async (dispatch) => {
     }
 }
 
-export const createToken = (data, history) => async (dispatch) => {
-
+export const createToken = (data, navigate) => async (dispatch) => {
+    console.log("Navigate::::::::", navigate)
+    console.log("Data for token:", data)
     try {
-
-        const res = await axios.post('http://192.168.100.44:3002/stripe/create-token', data)
+        const res = await axios.post('http://192.168.100.44:3002/stripe/createCharge', data)
         console.log("Response from stripe api for token:", res)
         // const res = await axios.post(`http://192.168.100.44:3002/category`, formData, { headers });
-
         if (res.status === 200) {
             dispatch({
                 type: CREATE_TOKEN,
                 isFetching: false,
                 payload: res.data.data,
             });
-            // history.push('/all-categories')
+            localStorage.clear()
+            navigate('/product')
         } else {
             dispatch(setIsFetching(false));
         }
@@ -277,6 +277,7 @@ export const addProduct = (formData, history) => async (dispatch) => {
 }
 
 export const getProductDataToUpdate = (id) => async (dispatch) => {
+    console.log("id::::::::::::: at get product data to update:", id)
     try {
         dispatch(setIsFetching(true));
         const res = await axios.get(`${process.env.REACT_APP_API_URL}product/${id}`);
@@ -285,6 +286,26 @@ export const getProductDataToUpdate = (id) => async (dispatch) => {
         if (res.status === 200) {
             dispatch({
                 type: GET_PRODUCT_DATA_TO_UPDATE,
+                // isFetching: false,
+                payload: res.data.data
+            });
+        } else {
+        }
+    } catch (error) {
+        // dispatch(setIsFetchingTodos(false));
+    }
+}
+
+export const getSingleProduct = (id) => async (dispatch) => {
+    console.log("id of single item at action:", id)
+    try {
+        dispatch(setIsFetching(true));
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}product/${id}`);
+        console.log('Response from api for single product to update:', res)
+        // dispatch(setIsFetchingTodos(true));
+        if (res.status === 200) {
+            dispatch({
+                type: GET_SINGLE_PRODUCT,
                 // isFetching: false,
                 payload: res.data.data
             });

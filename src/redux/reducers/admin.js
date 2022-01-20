@@ -1,4 +1,4 @@
-import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_CATEGORY, UPDATE_PRODUCT, SET_IS_FETCHING, CREATE_TOKEN } from "../constants/index";
+import { GET_ALL_USERS, GET_ALL_CATEGORIES, GET_ALL_PRODUCTS, ADD_PRODUCT, ADD_CATEGORY, GET_TODO_DETAIL, DELETE_USER, CREATE_TODO, GET_CATEGORY_DATA_TO_UPDATE, GET_PRODUCT_DATA_TO_UPDATE, UPDATE_CATEGORY, UPDATE_PRODUCT, SET_IS_FETCHING, CREATE_TOKEN, GET_SINGLE_PRODUCT } from "../constants/index";
 
 const initialState = {
   users: [],
@@ -40,7 +40,7 @@ const adminReducer = (state = initialState, action) => {
         isFetching: false,
         products: action.payload,
       };
-      case GET_PRODUCT_DATA_TO_UPDATE:
+      case GET_SINGLE_PRODUCT:
         return {
         ...state,
         isFetching: false,

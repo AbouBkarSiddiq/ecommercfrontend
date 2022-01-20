@@ -17,6 +17,7 @@ const Cart = () => {
   // console.log("Stripe Promise:", stripePromise);
 
   const [items, setItems] = useState([]);
+  // const [itemPrice, setItemPrice] = useState(localStorage.getItem("priceOfItems"))
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
   const dispatch = useDispatch()
 
@@ -34,10 +35,15 @@ const Cart = () => {
     // console.log("This hook works.")
   }, [])
 
+  const itemsPrice = items.reduce(function (prev, current) {
+    return prev + +current.price;
+  }, 0)
+  localStorage.setItem("priceOfItems", itemsPrice)
+
   return (
     <>
       <section className="product_section layout_padding">
-        {items ? (<div className="container">
+        {items && items.length > 0 && items ? (<><div className="container">
           <div className="row">
             {items?.map((item, key) => (
               <div className="col-sm-6 col-md-4 col-lg-3" index={key}>
@@ -59,30 +65,23 @@ const Cart = () => {
             ))}
           </div>
         </div>
-        ) : <h3>You have not selected any item.</h3>}
-        <div className="d-flex flex-column">
-          <div className="d-flex my-2 justify-content-center align-items-center">
-            <h2>Total Amount:</h2>
-            <div>
-              <h2>
-                {
-                  items.reduce(function (prev, current) {
-                    return prev + +current.price;
-                  }, 0)
-                }
-              </h2>
+            <div className="d-flex flex-column">
+              <div className="d-flex my-2 justify-content-center align-items-center">
+                <h2>Total Amount:</h2>
+                <div>
+                  <h2>
+                    $ {itemsPrice}
+                  </h2>
+                </div>
+              </div>
+              <div>
+                <Link to={'/payment'}>
+                  <button className="btn btn-danger">Check Out</button>
+                </Link>
+              </div>
             </div>
-          </div>
-          <div>
-            <Link to={'/payment'}>
-              <button className="btn btn-danger">Check Out</button>
-            </Link>
-            {/* <PaymentForm /> */}
-            {/* <Elements stripe={stripePromise} options={options}>
-              <CheckoutForm />
-            </Elements> */}
-          </div>
-        </div>
+            </>
+        ) : <h3>You have not selected any item.</h3>}
       </section>
     </>
   )

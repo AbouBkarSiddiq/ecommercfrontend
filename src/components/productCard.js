@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";  
 import { loadState, saveState } from '../redux/actions/storageActions';
 
 const ProductCard = ({ productItems, cartItems }) => {
@@ -34,7 +34,7 @@ const ProductCard = ({ productItems, cartItems }) => {
           </Link>
           {
             cartItems.find(element => element._id === product._id) ? null : <button onClick={(e) => addToCart(e, product)} className="option2 btn-style" style={{ cursor: "pointer" }}>
-              Buy Now
+              Add to Cart
             </button>
           }
         </div>
