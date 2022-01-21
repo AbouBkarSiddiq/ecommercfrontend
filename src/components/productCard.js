@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";  
 import { loadState, saveState } from '../redux/actions/storageActions';
 
+
 const ProductCard = ({ productItems, cartItems }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()

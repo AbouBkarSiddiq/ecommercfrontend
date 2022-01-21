@@ -91,7 +91,6 @@ const PaymentForm = () => {
     // val  => val && val.length === 4 && fourDigit !== '37')
     // .cvcLength('Must be three digits')
     // .cvcLengthFour('Must be four digits'),
-
   })
 
   const handleSubmit = async (e) => {

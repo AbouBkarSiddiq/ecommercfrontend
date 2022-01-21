@@ -8,7 +8,7 @@ import ProductCard from './productCard';
 import Pagination from './Pagination'
 import HeaderGrid from './HeaderGrid';
 import ProductFooter from './ProductFooter';
-
+import { BallTriangle } from 'react-loader-spinner'
 
 const Product = () => {
   const dispatch = useDispatch()
@@ -51,6 +51,8 @@ const Product = () => {
 
   return (
     <>
+    {isFetching ?  (<div className="d-flex justify-content-center align-items-center">
+        <BallTriangle color="#d42a33" height={80} width={80} /></div>) : <>
       <HeaderGrid name="Product Grid"/>
       <section className="product_section layout_padding">
         <div className="container">
@@ -85,6 +87,7 @@ const Product = () => {
         </div>
       </section>
       <ProductFooter />
+    </>}
     </>
   )
 }

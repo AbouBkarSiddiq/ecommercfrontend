@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { getAllCategories } from '../redux/actions/adminActions'
 import HeaderGrid from './HeaderGrid';
+import { BallTriangle } from 'react-loader-spinner'
 
 const Categories = () => {
   const dispatch = useDispatch()
@@ -16,6 +17,10 @@ const Categories = () => {
   
   console.log('Data of fetched categories:', categories)
   return (
+    <>{
+      isFetching ?  (<div className="d-flex justify-content-center align-items-center">
+        <BallTriangle color="#d42a33" height={80} width={80} /></div>) :
+    
     <div>
       <HeaderGrid name="Category Grid" />
       <section className="why_section p-4">
@@ -47,6 +52,8 @@ const Categories = () => {
         </div>
       </section>
     </div>
+}</>
+    
   )
 }
 export default Categories

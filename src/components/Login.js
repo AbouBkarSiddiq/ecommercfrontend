@@ -3,6 +3,7 @@ import { useNavigate, Redirect } from 'react-router-dom';
 import { Form, Field, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
+import SimpleSlider from './Carousel';
 // import { login } from '../../redux/actions/authActions'
 
 const initialValues = {
@@ -59,6 +60,7 @@ const Login = () => {
 
   return (
     <>
+    <SimpleSlider />
       <section class="py-4">
         <div class="container">
           <div class="row">
