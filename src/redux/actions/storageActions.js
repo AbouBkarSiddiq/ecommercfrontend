@@ -22,7 +22,6 @@ export const saveState = (state) => {
   try {
     // const items = JSON.stringify(state)
     const items = state;
-
     localStorage.setItem("item", JSON.stringify(items));
     if (items) {
       return {

@@ -42,7 +42,6 @@ const Product = () => {
   const indexOfFirstPost = indexOfLastPost - productItemsPerPage
   const currentPosts = productItems.slice(indexOfFirstPost, indexOfLastPost)
   const paginate = (pageNumber) => setCurrentPage(pageNumber)
-
   const pageCount = Math.ceil(users.length / usersPerPage)
 
   const changePage = ({ selected }) => {

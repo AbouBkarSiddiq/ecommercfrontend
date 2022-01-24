@@ -33,11 +33,11 @@ const ProductCard = ({ productItems, cartItems }) => {
           <Link to={`/product-details/${product._id}`} className="option1 btn-style" onClick={() => navigate('/product-details')} style={{ cursor: "pointer" }}>
             Product Details
           </Link>
-          {
+          {/* {
             cartItems.find(element => element._id === product._id) ? null : <button onClick={(e) => addToCart(e, product)} className="option2 btn-style" style={{ cursor: "pointer" }}>
               Add to Cart
             </button>
-          }
+          } */}
         </div>
       </div>
       <div className="img-box">

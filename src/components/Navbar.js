@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
   let items = useSelector((state) => state.storageReducer.cartItems);
-  console.log("Items::::::::::", items.length)
+  // console.log("Items::::::::::", items.length)
   const dispatch = useDispatch()
 
   useEffect(() => {

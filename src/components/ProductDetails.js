@@ -9,18 +9,23 @@ import Messages from './Message';
 import MessageInput from './MessageInput';
 import { useParams } from 'react-router-dom'
 import { getSingleProduct } from '../redux/actions/adminActions';
+import { loadState, saveState } from '../redux/actions/storageActions';
 import SimpleSlider from './Carousel';
 import { BallTriangle } from 'react-loader-spinner'
-
+import { setLocale } from 'yup';
 
 const ProductDetails = () => {
   const [singleItem, setSingleItem] = useState([])
   const [socket, setSocket] = useState(null);
-  const [sizes, setSizes] = useState([{ size: 's', status: false },
-  { size: 'm', status: false },
-  { size: 'lg', status: false },
-  { size: 'xl', status: false }
-  ]);
+  // const [sizes, setSizes] = useState([{ size: 's', status: false },
+  // { size: 'm', status: false },
+  // { size: 'lg', status: false },
+  // { size: 'xl', status: false }
+  // ]);
+  
+  let cartItems = useSelector((state) => state.storageReducer.cartItems);
+  // console.log("CartItems at product page:", cartItems)
+
   const { id } = useParams()
   const dispatch = useDispatch()
   // useEffect(() => {
@@ -34,56 +39,95 @@ const ProductDetails = () => {
     // getProductDataToUpdate(id)
     // dispatch(getSingleProduct(id))
     setSingleItem(product)
-    console.log("get single product2::::")
   }, [])
 
   useEffect(() => {
     // getProductDataToUpdate(id)
     dispatch(getSingleProduct(id))
     setSingleItem(product)
+    dispatch(loadState())
     console.log("get single product::::")
   }, [])
 
-  console.log("New socket:", socket)
-  console.log("Id::::", id)
+  // console.log("New socket:", socket)
+  // console.log("Id::::", id)
 
   let product = useSelector((state) => state.adminReducer.product);
-  console.log('Data of single product:', product, typeof (product))
+  // console.log('Data of single product:', product, typeof (product))
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
-  console.log('Products fetching true or false:::', isFetching)
+  // console.log('Products fetching true or false:::', isFetching)
+  
+  const sizes = ['s', 'm', 'l', 'xl']
+  let qty = 0
 
-  var settings = {
-    dots: true,
-    lazyLoad: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    initialSlide: 2
-  };
-
-  // const sizes = ['s', 'm', 'l', 'xl']
-
-  const handleSize = (e, index) => {
-    // e.target.style.backgroundColor = '#d42a33'
-    let arrayOfObject = [];
-    sizes.map(item => {
-      if (item.size === index.size) {
-        arrayOfObject.push({
-          size: item.size,
-          status: true
-        })
-      } else {
-        arrayOfObject.push({
-          size: item.size,
-          status: false
-        })
-      }
-    })
-    setSizes(arrayOfObject)
-    console.log(e.target);
-    console.log("Function Binded.", arrayOfObject, index, e)
+  const handleSize = (e, item, product) => {
+    localStorage.setItem('size', item)
+    product['size'] = item
+    product['qty'] = 1
   }
+
+  const addToCart = (e, product) => {
+    e.preventDefault()
+    const localItems = [...cartItems]
+    if (cartItems) {
+      const found = cartItems.find(element => ((element._id === product._id) && (element.size !== '' && (element.size === localStorage.getItem('size')))));
+      if(found) {
+        localStorage.setItem('qty', found['qty'] = ++qty)
+        console.log("Qty should increase only because same size already exists.", found)
+        let newArray = []
+        // newArray = localItems.map((item) => (item._id === found._id ? { ...item, ...found } : item))
+
+        newArray = localItems.map((item) => {
+        console.log("Qty should increase.", found)
+          if(item._id === found._id) {
+            return {...item, ...found}
+          } else {
+            return item
+          }
+        })
+
+        console.log("New array::::", newArray)
+        dispatch(saveState([...newArray]))
+
+      } else {
+        cartItems.push(product)
+        dispatch(saveState([...cartItems]))
+        console.log("Qty should updated along with size as the item is added for the first time.")
+      }
+    }
+
+    // if (cartItems) {
+      // const found = cartItems.find(element => element._id === product._id);
+    //   console.log("Id's matched:", found);
+
+    //   if (found) {
+    //     return console.log("Item already exists.")
+    //   } else {
+    //     cartItems.push(product);
+    //     dispatch(saveState([...cartItems]))
+    //   }
+    // }
+  }
+
+  // const handleSize = (e, index) => {
+  //   let arrayOfObject = [];
+  //   sizes.map(item => {
+  //     if (item.size === index.size) {
+  //       arrayOfObject.push({
+  //         size: item.size,
+  //         status: true
+  //       })
+  //     } else {
+  //       arrayOfObject.push({
+  //         size: item.size,
+  //         status: false
+  //       })
+  //     }
+  //   })
+  //   setSizes(arrayOfObject)
+  //   console.log(e.target);
+  //   console.log("Function Binded.", arrayOfObject, index, e)
+  // }
 
   return (
     <>
@@ -125,8 +169,8 @@ const ProductDetails = () => {
                     </p>
                     <h5 id="sizes-btn" className="sizes">
                       sizes:{sizes.map((item) => (
-                        <button style={{ marginLeft: '2px', marginRight: '2px' }} className={item.status ? 'btn-size-active' : 'btn-size'} data-toggle="tooltip" title="small" onClick={(e) => handleSize(e, item)}>
-                          {item.size}
+                        <button style={{ marginLeft: '2px', marginRight: '2px', }} onClick={(e) => handleSize(e, item, product)}>
+                          {item}
                         </button>
                       ))}
                     </h5>
@@ -141,12 +185,12 @@ const ProductDetails = () => {
                       <span className="color blue" />
                     </h5>
                     <div className="action">
-                      <button className="add-to-cart btn btn-default" type="button" >
+                      <button className="add-to-cart btn btn-default" type="button"  onClick={(e) => addToCart(e, product)}>
                         add to cart
                       </button>
-                      <button className="like btn btn-default" type="button">
+                      {/* <button className="like btn btn-default" type="button">
                         <span className="fa fa-heart" />
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>

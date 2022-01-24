@@ -76,7 +76,7 @@ const Cart = () => {
               </div>
               <div>
                 <Link to={'/payment'}>
-                  <button className="btn btn-danger">Check Out</button>
+                  <button className="btn btn-danger" style={{textAlign: 'center !important'}}>Check Out</button>
                 </Link>
               </div>
             </div>
