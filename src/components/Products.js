@@ -17,12 +17,12 @@ const Product = () => {
   const [productItemsPerPage] = useState(4)
 
   let products = useSelector((state) => state.adminReducer.products);
-  console.log('Data of fetched products:', products)
+  // console.log('Data of fetched products:', products)
   const isFetching = useSelector((state) => state.adminReducer.isFetching)
-  console.log('Products fetching true or false:::', isFetching)
+  // console.log('Products fetching true or false:::', isFetching)
 
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
-  console.log("CartItems at product page:", cartItems)
+  // console.log("CartItems at product page:", cartItems)
 
   const [users, setUsers] = useState([])
   const [pageNumber, setPageNumber] = useState(0)
@@ -35,7 +35,7 @@ const Product = () => {
     setProductItems(products)
     setUsers(products)
     dispatch(loadState())
-    console.log('Rendering useEffect...')
+    // console.log('Rendering useEffect...')
   }, [])
 
   const indexOfLastPost = currentPage * productItemsPerPage
@@ -53,7 +53,7 @@ const Product = () => {
     {isFetching ?  (<div className="d-flex justify-content-center align-items-center">
         <BallTriangle color="#d42a33" height={80} width={80} /></div>) : <>
       <HeaderGrid name="Product Grid"/>
-      <section className="product_section layout_padding">
+      <section className="product_section py-2">
         <div className="container">
           <div className="heading_container heading_center">
             <h2>

@@ -19,6 +19,7 @@ const Cart = () => {
   const [items, setItems] = useState([]);
   // const [itemPrice, setItemPrice] = useState(localStorage.getItem("priceOfItems"))
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
+  console.log("Cart Items:::", cartItems)
   const dispatch = useDispatch()
 
   const handleDelete = (key) => {
@@ -38,11 +39,12 @@ const Cart = () => {
   const itemsPrice = items.reduce(function (prev, current) {
     return prev + +current.price;
   }, 0)
+
   localStorage.setItem("priceOfItems", itemsPrice)
 
   return (
     <>
-      <section className="product_section layout_padding">
+      <section className="product_section">
         {items && items.length > 0 && items ? (<><div className="container">
           <div className="row">
             {items?.map((item, key) => (
@@ -59,6 +61,14 @@ const Cart = () => {
                       {'$' + item.price}
                     </h6>
                   </div>
+                  {/* <div className="detail-box">
+                    <h5>
+                      Size: {item.sizeSelected}
+                    </h5>
+                    <h6>
+                      Qty:{item.qty}
+                    </h6>
+                  </div> */}
                   <button className="btn btn-danger" onClick={() => handleDelete(key)}>remove</button>
                 </div>
               </div>
@@ -74,14 +84,14 @@ const Cart = () => {
                   </h2>
                 </div>
               </div>
-              <div>
-                <Link to={'/payment'}>
-                  <button className="btn btn-danger" style={{textAlign: 'center !important'}}>Check Out</button>
+              <div className="d-flex justify-content-center align-items-center">
+                <Link to={'/payment'} >
+                  <button className="btn btn-danger" >Check Out</button>
                 </Link>
               </div>
             </div>
             </>
-        ) : <h3>You have not selected any item.</h3>}
+        ) : <h3 className="d-flex justify-content-center align-items-center">You have not selected any item.</h3>}
       </section>
     </>
   )

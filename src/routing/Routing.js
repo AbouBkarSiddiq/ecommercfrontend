@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Categories from "../components/Categories";
-import Main from "../components/main";
+import Main from "../components/Home";
 import Navbar from '../components/Navbar'
 import Product from "../components/Products";
 import Cart from "../components/Cart";

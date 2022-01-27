@@ -3,23 +3,14 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 
-const initialValues = {
-  userName: '',
-  text: '',
-  productId: ''
-}
-
-const onSubmit = values => {
-  console.log('Fomik values:', values)
-}
-
-const validationSchema = Yup.object({
-  userName: Yup.string().required('Required!'),
-  text: Yup.string().required('Required!'),
-  productId: Yup.string().required('Required!'),
-})
- 
 const MessageInput = ({ socket }) => {
+
+  const initialValues = {
+    userName: '',
+    text: '',
+    productId: ''
+  }
+  
   const navigate = useNavigate()
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,6 +24,21 @@ const MessageInput = ({ socket }) => {
     // setProductId('')
     // console.log('Comment related data:', data)
   }
+
+  const validationSchema = Yup.object({
+    userName: Yup.string().required('Required!'),
+    text: Yup.string().required('Required!'),
+    productId: Yup.string().required('Required!'),
+  })
+
+  const handleComment = (comment) => {
+    console.log("This function is binded.")
+  }
+
+  const onSubmit = values => {
+    console.log('Fomik values:', values)
+  }
+  
 
   // useEffect(() => {
   //   socket.on("comment", async (data) => {
@@ -53,16 +59,16 @@ const MessageInput = ({ socket }) => {
                     <div className="d-flex flex-column">
                       <label style={{ textAlign: 'left' }}>Message</label>
                       <Field
-                        style={{marginBottom: '8px !important', backgroundColor: ''}}
+                        style={{ marginBottom: '8px !important', backgroundColor: '' }}
                         type="text"
                         placeholder="Comment"
                         name="text"
                       />
-                      <div className="text-left text-danger" style={{marginBottom: '8px !important'}} >
+                      <div className="text-left text-danger" style={{ marginBottom: '8px !important' }} >
                         <ErrorMessage name='text' />
                       </div>
                     </div>
-                    <div className="d-flex flex-column">
+                    {/* <div className="d-flex flex-column">
                       <label style={{ textAlign: 'left' }}>User Name</label>
                       <Field
                         type="text"
@@ -83,9 +89,9 @@ const MessageInput = ({ socket }) => {
                       <div className="text-left text-danger mb-4" >
                         <ErrorMessage name='productId' />
                       </div>
-                    </div>
+                    </div> */}
                   </fieldset>
-                  <button type="submit" className="btn btn-primary">Comment</button>
+                  <button type="submit" className="btn btn-primary" onClick={handleComment}>Comment</button>
                 </Form>
               </Formik>
               <div className="">
@@ -99,5 +105,4 @@ const MessageInput = ({ socket }) => {
     </>
   )
 }
-
 export default MessageInput

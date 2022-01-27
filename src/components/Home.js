@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Navbar from './Navbar';
 import Product from './Products';
 
-const Main = () => {
+const HomePage = () => {
   return (
     <div className="">
       <div className="hero_area">
@@ -520,4 +520,4 @@ const Main = () => {
   )
 }
 
-export default Main
+export default HomePage

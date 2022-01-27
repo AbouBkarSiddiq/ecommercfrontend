@@ -26,11 +26,11 @@ const ProductCard = ({ productItems, cartItems }) => {
 
   return (
     <>
-    {productItems && productItems?.map((product, index) => (<div className="col-sm-6 col-md-4 col-lg-3 py-4" key={index}>
+    {productItems && productItems?.map((product, index) => (<div className="col-sm-6 col-md-4 col-lg-3 pb-4" key={index}>
     <div className="box">
       <div className="option_container">
         <div className="options">
-          <Link to={`/product-details/${product._id}`} className="option1 btn-style" onClick={() => navigate('/product-details')} style={{ cursor: "pointer" }}>
+          <Link to={`/product-details/${product._id}`} className="option1 btn-style" onClick={() => navigate('/product-details')} style={{ cursor: "pointer", textDecoration: "none" }}>
             Product Details
           </Link>
           {/* {

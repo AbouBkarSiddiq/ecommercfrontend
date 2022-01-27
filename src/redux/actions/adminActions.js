@@ -281,7 +281,7 @@ export const getProductDataToUpdate = (id) => async (dispatch) => {
     try {
         dispatch(setIsFetching(true));
         const res = await axios.get(`${process.env.REACT_APP_API_URL}product/${id}`);
-        console.log('Response from api for single todo to be update:', res)
+        // console.log('Response from api for single todo to be update:', res.data.data)
         // dispatch(setIsFetchingTodos(true));
         if (res.status === 200) {
             dispatch({
@@ -301,7 +301,7 @@ export const getSingleProduct = (id) => async (dispatch) => {
     try {
         dispatch(setIsFetching(true));
         const res = await axios.get(`${process.env.REACT_APP_API_URL}product/${id}`);
-        console.log('Response from api for single product to update:', res)
+        console.log('Response from api for single product to update:', res.data.data)
         // dispatch(setIsFetchingTodos(true));
         if (res.status === 200) {
             dispatch({

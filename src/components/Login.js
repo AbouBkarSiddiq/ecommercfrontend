@@ -3,16 +3,12 @@ import { useNavigate, Redirect } from 'react-router-dom';
 import { Form, Field, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
-import SimpleSlider from './Carousel';
-// import { login } from '../../redux/actions/authActions'
+import { login } from '../redux/actions/authActions'
+
 
 const initialValues = {
   email: '',
   password: ''
-}
-
-const onSubmit = values => {
-  console.log('Fomik values:', values)
 }
 
 const validationSchema = Yup.object({
@@ -20,9 +16,8 @@ const validationSchema = Yup.object({
     .email('Invalid email format')
     .required('Required'),
   password: Yup.string().required('No password provided.')
-    .min(8, 'Password is too short - should be 8 chars minimum.')
-    .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.')
-
+    // .min(8, 'Password is too short - should be 8 chars minimum.')
+    // .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.')
 })
 
 const validate = values => {
@@ -36,7 +31,7 @@ const validate = values => {
   if (!values.password) {
     errors.password = 'Required'
   }
-
+  
   return errors
 }
 
@@ -58,9 +53,13 @@ const Login = () => {
   //     console.log("Data of user:", data)
   // }
 
+  const onSubmit = values => {
+    console.log('Fomik values:', values)
+    dispatch(login(values, navigate))
+  }
+
   return (
     <>
-    <SimpleSlider />
       <section class="py-4">
         <div class="container">
           <div class="row">
@@ -107,5 +106,4 @@ const Login = () => {
     </>
   );
 }
-
 export default Login;
