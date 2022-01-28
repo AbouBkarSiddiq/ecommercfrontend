@@ -30,7 +30,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     dispatch(getSingleProduct(id))
-    setSingleItem(product)
+    // setSingleItem(product)
     dispatch(loadState())
     console.log("get single product::::")
   }, [])
@@ -254,11 +254,9 @@ const ProductDetails = () => {
                 </div>
               </div>
             </section> */}
-            
-
 
             <div className="py-4">
-              <MessageInput socket={socket} />
+              <MessageInput socket={socket} id={id}/>
             </div>
           </div>
       )}

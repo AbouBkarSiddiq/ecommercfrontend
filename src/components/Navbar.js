@@ -7,12 +7,17 @@ const Navbar = () => {
   let items = useSelector((state) => state.storageReducer.cartItems);
   // console.log("Items::::::::::", items.length)
   const dispatch = useDispatch()
+  const user = localStorage.getItem("userName")
 
   useEffect(() => {
       dispatch(loadState())
     console.log("This hook works.")
-    
   }, [])
+
+  const handleLogout = () => {
+    localStorage.clear()
+    console.log("Binded")
+  }
 
   return (
     <>
@@ -34,9 +39,12 @@ const Navbar = () => {
                 <li className="nav-item">
                   <Link to="/product" className="nav-link">Products</Link>
                 </li>
-                <li className="nav-item">
+                {/* {user ? <li className="nav-item" onClick={handleLogout}><Link className="nav-link" to="/">Logout</Link></li> : <li className="nav-item">
                   <Link className="nav-link" to="/login">Login</Link>
-                </li>
+                </li>} */}
+                {user ? null : <li className="nav-item">
+                  <Link className="nav-link" to="/login">Login</Link>
+                </li>}
                 <li className="nav-item cart-icon">
                   <Link className="nav-link" to="/cart">
                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 456.029 456.029" style={{ enableBackground: 'new 0 0 456.029 456.029' }} xmlSpace="preserve">

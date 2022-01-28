@@ -11,7 +11,8 @@ export const login = (data, navigate) => async (dispatch) => {
     // .then(response => {
             console.log("Response login for token: ", response)
             localStorage.setItem('userId', response.data.data._id);
-            localStorage.setItem('email', response.data.data.email);
+            localStorage.setItem('userName', response.data.data.userName);
+            // localStorage.setItem('email', response.data.data.email);
             if(response.status === 200) {
                 dispatch({
                     type: LOGIN,
