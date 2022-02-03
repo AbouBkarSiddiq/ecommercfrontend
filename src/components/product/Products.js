@@ -2,12 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Redirect, Link } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
-import { getAllProducts } from '../redux/actions/adminActions'
-import { loadState, saveState } from '../redux/actions/storageActions';
-import ProductCard from './productCard';
-import Pagination from './Pagination'
-import HeaderGrid from './HeaderGrid';
-import ProductFooter from './ProductFooter';
+import { getAllProducts } from '../../redux/actions/adminActions'
+import { loadState, saveState } from '../../redux/actions/storageActions';
+import ProductCard from '../product/productCard';
+import Footer from '../common/Footer';
 import { BallTriangle } from 'react-loader-spinner'
 
 const Product = () => {
@@ -24,27 +22,21 @@ const Product = () => {
   let cartItems = useSelector((state) => state.storageReducer.cartItems);
   // console.log("CartItems at product page:", cartItems)
 
-  const [users, setUsers] = useState([])
+  const [items, setItems] = useState([])
   const [pageNumber, setPageNumber] = useState(0)
-  const usersPerPage = 4
-  const pagesVisited = pageNumber * usersPerPage
-  const displayUsers = users.slice(pagesVisited, pagesVisited + usersPerPage)
+  const itemsPerPage = 4
+  const pagesVisited = pageNumber * itemsPerPage
+  const displayItems = items.slice(pagesVisited, pagesVisited + itemsPerPage)
 
   useEffect(() => {
     dispatch(getAllProducts());
     setProductItems(products)
-    setUsers(products)
+    setItems(products)
     dispatch(loadState())
-    // console.log('Rendering useEffect...')
   }, [])
 
-  const indexOfLastPost = currentPage * productItemsPerPage
-  const indexOfFirstPost = indexOfLastPost - productItemsPerPage
-  const currentPosts = productItems.slice(indexOfFirstPost, indexOfLastPost)
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
-  const pageCount = Math.ceil(users.length / usersPerPage)
-
-  const changePage = ({ selected }) => {
+  const pageCount = Math.ceil(items.length / itemsPerPage)
+  const changeItem = ({ selected }) => {
     setPageNumber(selected)
   }
 
@@ -52,7 +44,6 @@ const Product = () => {
     <>
     {isFetching ?  (<div className="d-flex justify-content-center align-items-center">
         <BallTriangle color="#d42a33" height={80} width={80} /></div>) : <>
-      <HeaderGrid name="Product Grid"/>
       <section className="product_section py-2">
         <div className="container">
           <div className="heading_container heading_center">
@@ -63,13 +54,13 @@ const Product = () => {
           <div className="row">
             {
               <>
-                <ProductCard productItems={displayUsers} cartItems={cartItems} />
+                <ProductCard productItems={displayItems} cartItems={cartItems} />
                 <div style={{ display: 'flex', flexDirection: '', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                   <ReactPaginate
-                    previousLabel={"Previous"}
+                    previousLabel={"Prev"}
                     nextLabel={"Next"}
                     pageCount={pageCount}
-                    onPageChange={changePage}
+                    onPageChange={changeItem}
                     containerClassName={"paginationBttns"}
                     previousLinkClassName={"previousBttn"}
                     nextLinkClassName={"nextBttn"}
@@ -77,15 +68,12 @@ const Product = () => {
                     activeClassName={"paginationActive"}
                   />
                 </div>
-                {/* <ProductCard productItems={currentPosts} cartItems={cartItems} /> */}
-                {/* <Pagination productItemsPerPage={productItemsPerPage} totalProductItems={productItems.length} paginate={paginate}/> */}
               </>
             }
-
           </div>
         </div>
       </section>
-      <ProductFooter />
+      <Footer />
     </>}
     </>
   )

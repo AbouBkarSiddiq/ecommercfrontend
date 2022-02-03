@@ -1,0 +1,26 @@
+.slick-dots li.slick-active button:before {
+    color: red;
+    font-size: 14px;
+  }
+
+  .slick-dots li button:before {
+    font-family: 'slick';
+    font-size: 14px;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    content: '•';
+    text-align: center;
+    opacity: .25;
+    color: black;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+  
+  .slick-next:before {
+    color: #881798;
+    /* font-size: 20px; */
+  }

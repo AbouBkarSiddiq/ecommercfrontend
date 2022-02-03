@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { loadState } from "../redux/actions/storageActions"
+import { loadState } from "../../redux/actions/storageActions"
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {

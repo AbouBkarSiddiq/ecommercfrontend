@@ -1,8 +1,7 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";  
-import { loadState, saveState } from '../redux/actions/storageActions';
-
+import { loadState, saveState } from '../../redux/actions/storageActions';
 
 const ProductCard = ({ productItems, cartItems }) => {
   const navigate = useNavigate()
@@ -24,7 +23,7 @@ const ProductCard = ({ productItems, cartItems }) => {
     }
   }
 
-  return (
+  return ( 
     <>
     {productItems && productItems?.map((product, index) => (<div className="col-sm-6 col-md-4 col-lg-3 pb-4" key={index}>
     <div className="box">
@@ -45,7 +44,7 @@ const ProductCard = ({ productItems, cartItems }) => {
       </div>
       <div className="detail-box">
         <h5>
-          {product.description}
+          {product.title}
         </h5>
         <h6>
           {'$' + product.price}

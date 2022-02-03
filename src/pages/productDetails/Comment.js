@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addComment, getAllComments } from '../redux/actions/adminActions';
+import { addComment, getAllComments } from '../../redux/actions/adminActions';
 import { BallTriangle } from 'react-loader-spinner'
 
 const MessageInput = ({ socket, id }) => {

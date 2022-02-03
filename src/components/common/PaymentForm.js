@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Field, Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { object, string, number, date, InferType } from 'yup';
-import { createToken } from "../redux/actions/adminActions"
+import { createToken } from "../../redux/actions/adminActions"
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import { loadState, saveState } from '../redux/actions/storageActions';
+import { loadState, saveState } from '../../redux/actions/storageActions';
 
 const PaymentForm = () => {
 
@@ -93,56 +93,7 @@ const PaymentForm = () => {
     // .cvcLengthFour('Must be four digits'),
   })
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    // const data = { number, exp_month, exp_year, cvc }
-    // console.log('Data of card info:', data)
-    // dispatch(createToken(data))
-
-    // axios.post('http://localhost:3002/stripe/create-token', data)
-    // .then(response => {
-    //     console.log("Response coming from creating new todo.", response)
-    // })
-
-    // if (!stripe || !elements) {
-    //     return
-    // }
-
-    // const { clientSecret } = await fetch('http://localhost:3002/stripe/create-token', {
-    //     method: 'POST',
-    //     headers: {
-    //         contentType: 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //         paymentMethodType: 'card',
-    //         currency: 'USD',
-    //     }),
-    // }).then(response => response.json())
-
-    // const { paymentIntent } = await stripe.confirmCardPayment(
-    //     clientSecret,
-    //     {
-    //         payment_method: {
-    //             card: elements.getElement(CardElement)
-    //         }
-    //     }
-    // )
-    // console.log(paymentIntent.id)
-  }
   console.log("Price of itesm:", localStorage.getItem("priceOfItems"))
-
-  // useEffect(() => {
-  //   dispatch(loadState())
-  //   setItems(cartItems)
-  //   // console.log("This hook works.")
-  // }, [])
-
-  // const itemsPrice = items.reduce(function (prev, current) {
-  //   return prev + +current.price;
-  // }, 0)
-
-  // console.log("Items price at payment form:", itemsPrice)
-  // setPrice(itemsPrice)
 
   return (
     <div>
@@ -156,7 +107,6 @@ const PaymentForm = () => {
                 type="number"
                 name="amount"
                 placeholder="Amount"
-                // value={itemsPrice}
                 readOnly={true}
                 style={{ outline: "none" }}
               />

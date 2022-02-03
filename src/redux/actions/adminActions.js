@@ -345,7 +345,6 @@ export const updateProduct = (id, formData, history) => async (dispatch) => {
     } else {
       dispatch(setIsFetching(false));
     }
-
   } catch (error) {
     dispatch(setIsFetching(false));
   }

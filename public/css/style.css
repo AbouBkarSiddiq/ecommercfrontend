@@ -258,9 +258,11 @@ h4.product-price {
   background-color: #f7444e;
 }
 
-.paginationDisabled a {
-  color: grey;
-  background-color: grey;
+
+.paginationDisabled a:hover {
+  color: red;
+  background-color: rgb(163, 151, 151);
+  text-decoration: none;
 }
 
 .pagination {
